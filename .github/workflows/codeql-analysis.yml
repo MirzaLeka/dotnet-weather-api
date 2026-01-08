@@ -1,0 +1,45 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.cs'
+      - '**/*.csproj'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**/*.cs'
+      - '**/*.csproj'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      # Required for PRs to compare against the base branch
+      - run: git checkout HEAD^2
+        if: ${{ github.event_name == 'pull_request' }}
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      # Auto-build your .NET Web API
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
