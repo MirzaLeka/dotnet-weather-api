@@ -10,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
 
 // Replace main logger

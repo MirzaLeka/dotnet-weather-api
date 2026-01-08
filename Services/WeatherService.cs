@@ -2,14 +2,14 @@
 
 namespace WeatherAPI.Services
 {
-	public class WeatherService(ILogger<WeatherService> logger) : IWeatherService
+	public class WeatherService(IAppLogger<WeatherService> logger) : IWeatherService
 	{
 		private static List<string> Summaries = new()
 		{
 			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 		};
 
-		private readonly ILogger<WeatherService> _logger = logger;
+		private readonly IAppLogger<WeatherService> _logger = logger;
 
 		public IEnumerable<WeatherForecast> GetForecasts()
 		{
@@ -21,8 +21,6 @@ namespace WeatherAPI.Services
 			})
 			.ToArray();
 
-			_logger.LogWarning("First array {forecast}", array[0]);
-			_logger.LogWarning("First summary {summary}", Summaries[0]);
 
 			// changes
 
@@ -34,12 +32,6 @@ namespace WeatherAPI.Services
 
 		public void CreateForecast(string forecast)
 		{
-			_logger.LogInformation("Provided message: {forecast}", forecast);
-			_logger.LogWarning("Provided message: {forecast}", forecast);
-
-			Summaries.Add(forecast);
-
-			_logger.LogWarning("Added message: {forecast}. TOtal {summaries}", forecast, Summaries.Count);
 
 			// changes
 
@@ -67,13 +59,6 @@ namespace WeatherAPI.Services
 
 		public void CreateWeatherForecast(WeatherForecast weather)
 		{
-			_logger.LogWarning("Added weather @{weather}", new { weather, date = DateTime.Now });
-
-			_logger.LogWarning("Added weather serialized {weather}", JsonSerializer.Serialize(weather));
-
-			_logger.LogWarning("Added weather @{weather}, {event_name}", new { weather }, EventName.ADD_WEATHER);
-			_logger.LogInformation("Added weather @{weather}, {event_name}", new { weather }, EventName.ADD_WEATHER);
-
 			// changes
 
 			_logger.LogWarning("Added weather @{weather}", new { weather, date = DateTime.Now });
