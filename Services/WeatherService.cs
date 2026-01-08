@@ -2,14 +2,14 @@
 
 namespace WeatherAPI.Services
 {
-	public class WeatherService(ILogger<WeatherService> logger) : IWeatherService
+	public class WeatherService(IAppLogger<WeatherService> logger) : IWeatherService
 	{
 		private static List<string> Summaries = new()
 		{
 			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 		};
 
-		private readonly ILogger<WeatherService> _logger = logger;
+		private readonly IAppLogger<WeatherService> _logger = logger;
 
 		public IEnumerable<WeatherForecast> GetForecasts()
 		{
@@ -21,6 +21,9 @@ namespace WeatherAPI.Services
 			})
 			.ToArray();
 
+
+			// changes
+
 			_logger.LogWarning("First array {forecast}", array[0]);
 			_logger.LogWarning("First summary {summary}", Summaries[0]);
 
@@ -29,12 +32,13 @@ namespace WeatherAPI.Services
 
 		public void CreateForecast(string forecast)
 		{
+
+			// changes
+
 			_logger.LogInformation("Provided message: {forecast}", forecast);
 			_logger.LogWarning("Provided message: {forecast}", forecast);
-
-			Summaries.Add(forecast);
-
 			_logger.LogWarning("Added message: {forecast}. TOtal {summaries}", forecast, Summaries.Count);
+
 
 		}
 
@@ -46,13 +50,17 @@ namespace WeatherAPI.Services
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Message was: {message}. Inner exp was: {innerEx}, Status is: {status}", ex.Message, ex.InnerException?.Message, 500);
+				_logger.LogError(ex, "Message was: {message}. Inner exp waaas: {innerEx}, Status is: {status}", ex.Message, ex.InnerException?.Message, 500);
+				_logger.LogCritical(ex, "Message was: {message}. Inner exp was: {innerEx}, Status is: {status}", ex.Message, ex.InnerException?.Message, 500);
+
 				return 500;
 			}
 		}
 
 		public void CreateWeatherForecast(WeatherForecast weather)
 		{
+			// changes
+
 			_logger.LogWarning("Added weather @{weather}", new { weather, date = DateTime.Now });
 
 			_logger.LogWarning("Added weather serialized {weather}", JsonSerializer.Serialize(weather));
