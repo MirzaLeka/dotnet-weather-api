@@ -24,6 +24,11 @@ namespace WeatherAPI.Services
 			_logger.LogWarning("First array {forecast}", array[0]);
 			_logger.LogWarning("First summary {summary}", Summaries[0]);
 
+			// changes
+
+			_logger.LogWarning("First array {forecast}", array[0]);
+			_logger.LogWarning("First summary {summary}", Summaries[0]);
+
 			return array;
 		}
 
@@ -36,6 +41,13 @@ namespace WeatherAPI.Services
 
 			_logger.LogWarning("Added message: {forecast}. TOtal {summaries}", forecast, Summaries.Count);
 
+			// changes
+
+			_logger.LogInformation("Provided message: {forecast}", forecast);
+			_logger.LogWarning("Provided message: {forecast}", forecast);
+			_logger.LogWarning("Added message: {forecast}. TOtal {summaries}", forecast, Summaries.Count);
+
+
 		}
 
 		public int GetErrors()
@@ -46,13 +58,24 @@ namespace WeatherAPI.Services
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Message was: {message}. Inner exp was: {innerEx}, Status is: {status}", ex.Message, ex.InnerException?.Message, 500);
+				_logger.LogError(ex, "Message was: {message}. Inner exp waaas: {innerEx}, Status is: {status}", ex.Message, ex.InnerException?.Message, 500);
+				_logger.LogCritical(ex, "Message was: {message}. Inner exp was: {innerEx}, Status is: {status}", ex.Message, ex.InnerException?.Message, 500);
+
 				return 500;
 			}
 		}
 
 		public void CreateWeatherForecast(WeatherForecast weather)
 		{
+			_logger.LogWarning("Added weather @{weather}", new { weather, date = DateTime.Now });
+
+			_logger.LogWarning("Added weather serialized {weather}", JsonSerializer.Serialize(weather));
+
+			_logger.LogWarning("Added weather @{weather}, {event_name}", new { weather }, EventName.ADD_WEATHER);
+			_logger.LogInformation("Added weather @{weather}, {event_name}", new { weather }, EventName.ADD_WEATHER);
+
+			// changes
+
 			_logger.LogWarning("Added weather @{weather}", new { weather, date = DateTime.Now });
 
 			_logger.LogWarning("Added weather serialized {weather}", JsonSerializer.Serialize(weather));
